@@ -1,0 +1,228 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="FootballModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Admin">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Client">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="First_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Last_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Phone" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Comments" Relationship="Self.FK_Comments_Clients" FromRole="Clients" ToRole="Comments" />
+    <NavigationProperty Name="Reservations" Relationship="Self.FK_Reservation_Clients" FromRole="Clients" ToRole="Reservation" />
+    <NavigationProperty Name="Tasks" Relationship="Self.FK_Task_Clients" FromRole="Clients" ToRole="Task" />
+  </EntityType>
+  <EntityType Name="Comment_Report">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Task_id" Type="Int32" Nullable="false" />
+    <Property Name="Comment_id" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Comment" Relationship="Self.FK_Comment_Report_Comments" FromRole="Comment_Report" ToRole="Comments" />
+    <NavigationProperty Name="Task" Relationship="Self.FK_Comment_Report_Task" FromRole="Comment_Report" ToRole="Task" />
+  </EntityType>
+  <EntityType Name="Comment">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Comment1" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Comment_Date" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="Client_Id" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Client" Relationship="Self.FK_Comments_Clients" FromRole="Comments" ToRole="Clients" />
+    <NavigationProperty Name="Comment_Report" Relationship="Self.FK_Comment_Report_Comments" FromRole="Comments" ToRole="Comment_Report" />
+  </EntityType>
+  <EntityType Name="Pitch">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Pitch_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Pitch_Number" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Price" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+    <Property Name="Status" Type="Byte" Nullable="false" />
+    <NavigationProperty Name="Reservations" Relationship="Self.FK_Reservation_Pitch" FromRole="Pitch" ToRole="Reservation" />
+  </EntityType>
+  <EntityType Name="Reservation">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Clients_Id" Type="Int32" Nullable="false" />
+    <Property Name="Pitch_Id" Type="Int32" Nullable="false" />
+    <Property Name="Rooms_Id" Type="Int32" Nullable="false" />
+    <Property Name="Reservation_Date" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="Price" Type="Int32" Nullable="false" />
+    <Property Name="Reservation_Deadline" Type="DateTime" Nullable="false" Precision="3" />
+    <NavigationProperty Name="Client" Relationship="Self.FK_Reservation_Clients" FromRole="Reservation" ToRole="Clients" />
+    <NavigationProperty Name="Pitch" Relationship="Self.FK_Reservation_Pitch" FromRole="Reservation" ToRole="Pitch" />
+    <NavigationProperty Name="Room" Relationship="Self.FK_Reservation_Rooms" FromRole="Reservation" ToRole="Rooms" />
+  </EntityType>
+  <EntityType Name="Room">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Rooms_Number" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Percon_Count" Type="Int32" Nullable="false" />
+    <Property Name="Rooms_Price" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+    <Property Name="Status" Type="Byte" Nullable="false" />
+    <NavigationProperty Name="Reservations" Relationship="Self.FK_Reservation_Rooms" FromRole="Rooms" ToRole="Reservation" />
+  </EntityType>
+  <EntityType Name="sysdiagram">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="Task">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Task1" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Task_Date" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="Deadline" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="Client_Id" Type="Int32" Nullable="false" />
+    <Property Name="Status" Type="Byte" Nullable="false" />
+    <Property Name="Description" Type="String" MaxLength="300" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Client" Relationship="Self.FK_Task_Clients" FromRole="Task" ToRole="Clients" />
+    <NavigationProperty Name="Comment_Report" Relationship="Self.FK_Comment_Report_Task" FromRole="Task" ToRole="Comment_Report" />
+  </EntityType>
+  <Association Name="FK_Comments_Clients">
+    <End Role="Clients" Type="Self.Client" Multiplicity="1" />
+    <End Role="Comments" Type="Self.Comment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Clients">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Comments">
+        <PropertyRef Name="Client_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Reservation_Clients">
+    <End Role="Clients" Type="Self.Client" Multiplicity="1" />
+    <End Role="Reservation" Type="Self.Reservation" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Clients">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Reservation">
+        <PropertyRef Name="Clients_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Task_Clients">
+    <End Role="Clients" Type="Self.Client" Multiplicity="1" />
+    <End Role="Task" Type="Self.Task" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Clients">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Task">
+        <PropertyRef Name="Client_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Comment_Report_Comments">
+    <End Role="Comments" Type="Self.Comment" Multiplicity="1" />
+    <End Role="Comment_Report" Type="Self.Comment_Report" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Comments">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Comment_Report">
+        <PropertyRef Name="Comment_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Comment_Report_Task">
+    <End Role="Task" Type="Self.Task" Multiplicity="1" />
+    <End Role="Comment_Report" Type="Self.Comment_Report" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Task">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Comment_Report">
+        <PropertyRef Name="Task_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Reservation_Pitch">
+    <End Role="Pitch" Type="Self.Pitch" Multiplicity="1" />
+    <End Role="Reservation" Type="Self.Reservation" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Pitch">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Reservation">
+        <PropertyRef Name="Pitch_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Reservation_Rooms">
+    <End Role="Rooms" Type="Self.Room" Multiplicity="1" />
+    <End Role="Reservation" Type="Self.Reservation" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Rooms">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Reservation">
+        <PropertyRef Name="Rooms_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="FootballEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Admins" EntityType="Self.Admin" />
+    <EntitySet Name="Clients" EntityType="Self.Client" />
+    <EntitySet Name="Comment_Report" EntityType="Self.Comment_Report" />
+    <EntitySet Name="Comments" EntityType="Self.Comment" />
+    <EntitySet Name="Pitches" EntityType="Self.Pitch" />
+    <EntitySet Name="Reservations" EntityType="Self.Reservation" />
+    <EntitySet Name="Rooms" EntityType="Self.Room" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+    <EntitySet Name="Tasks" EntityType="Self.Task" />
+    <AssociationSet Name="FK_Comments_Clients" Association="Self.FK_Comments_Clients">
+      <End Role="Clients" EntitySet="Clients" />
+      <End Role="Comments" EntitySet="Comments" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Reservation_Clients" Association="Self.FK_Reservation_Clients">
+      <End Role="Clients" EntitySet="Clients" />
+      <End Role="Reservation" EntitySet="Reservations" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Task_Clients" Association="Self.FK_Task_Clients">
+      <End Role="Clients" EntitySet="Clients" />
+      <End Role="Task" EntitySet="Tasks" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Comment_Report_Comments" Association="Self.FK_Comment_Report_Comments">
+      <End Role="Comments" EntitySet="Comments" />
+      <End Role="Comment_Report" EntitySet="Comment_Report" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Comment_Report_Task" Association="Self.FK_Comment_Report_Task">
+      <End Role="Task" EntitySet="Tasks" />
+      <End Role="Comment_Report" EntitySet="Comment_Report" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Reservation_Pitch" Association="Self.FK_Reservation_Pitch">
+      <End Role="Pitch" EntitySet="Pitches" />
+      <End Role="Reservation" EntitySet="Reservations" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Reservation_Rooms" Association="Self.FK_Reservation_Rooms">
+      <End Role="Rooms" EntitySet="Rooms" />
+      <End Role="Reservation" EntitySet="Reservations" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

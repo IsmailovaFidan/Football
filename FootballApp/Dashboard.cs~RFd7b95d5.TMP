@@ -1,0 +1,49 @@
+﻿using FootballApp.Model;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace FootballApp
+{
+    public partial class Dashboard : Form
+    {
+        FootballAppEntities db = new FootballAppEntities();
+        public Dashboard()
+        {
+            InitializeComponent();
+        }
+
+        
+
+        private void Button9_Click(object sender, EventArgs e)
+        {
+            Reservation_Demo rd = new Reservation_Demo();
+            rd.ShowDialog();
+        }
+
+        private void Dashboard_Load(object sender, EventArgs e)
+        {
+            FillReservationDtgView();
+        }
+        private void FillReservationDtgView()
+        {
+            dtgView.DataSource = db.Reservation.Select(a => new
+            {
+                a.Clients.First_Name,
+                a.Clients.Last_Name,
+                a.Clients.Phone,
+                a.Pitch.Pitch_Name,
+                a.Pitch.Pitch_Number,
+                a.Rooms.Rooms_Number,
+                a.Reservation_Date,
+                a.Price
+            }).ToList();
+        }
+    }
+}
