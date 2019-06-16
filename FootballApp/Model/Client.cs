@@ -19,7 +19,7 @@ namespace FootballApp.Model
         {
             this.Comments = new HashSet<Comment>();
             this.Reservations = new HashSet<Reservation>();
-            this.Tasks = new HashSet<Task>();
+            this.TaskClients = new HashSet<TaskClient>();
         }
     
         public int Id { get; set; }
@@ -32,6 +32,6 @@ namespace FootballApp.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Reservation> Reservations { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Task> Tasks { get; set; }
+        public virtual ICollection<TaskClient> TaskClients { get; set; }
     }
 }

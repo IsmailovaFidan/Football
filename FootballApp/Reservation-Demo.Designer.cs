@@ -237,6 +237,7 @@
             this.cmbRoomNumber.Name = "cmbRoomNumber";
             this.cmbRoomNumber.Size = new System.Drawing.Size(246, 29);
             this.cmbRoomNumber.TabIndex = 6;
+            this.cmbRoomNumber.SelectedIndexChanged += new System.EventHandler(this.CmbRoomNumber_SelectedIndexChanged);
             // 
             // dateFrom
             // 

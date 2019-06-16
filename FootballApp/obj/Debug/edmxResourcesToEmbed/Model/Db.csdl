@@ -18,7 +18,7 @@
     <Property Name="Phone" Type="Int32" Nullable="false" />
     <NavigationProperty Name="Comments" Relationship="Self.FK_Comments_Clients" FromRole="Clients" ToRole="Comments" />
     <NavigationProperty Name="Reservations" Relationship="Self.FK_Reservation_Clients" FromRole="Clients" ToRole="Reservation" />
-    <NavigationProperty Name="Tasks" Relationship="Self.FK_Task_Clients" FromRole="Clients" ToRole="Task" />
+    <NavigationProperty Name="TaskClients" Relationship="Self.FK_Task_Clients" FromRole="Clients" ToRole="TaskClient" />
   </EntityType>
   <EntityType Name="Comment_Report">
     <Key>
@@ -28,7 +28,7 @@
     <Property Name="Task_id" Type="Int32" Nullable="false" />
     <Property Name="Comment_id" Type="Int32" Nullable="false" />
     <NavigationProperty Name="Comment" Relationship="Self.FK_Comment_Report_Comments" FromRole="Comment_Report" ToRole="Comments" />
-    <NavigationProperty Name="Task" Relationship="Self.FK_Comment_Report_Task" FromRole="Comment_Report" ToRole="Task" />
+    <NavigationProperty Name="TaskClient" Relationship="Self.FK_Comment_Report_Task" FromRole="Comment_Report" ToRole="TaskClient" />
   </EntityType>
   <EntityType Name="Comment">
     <Key>
@@ -78,29 +78,19 @@
     <Property Name="Status" Type="Byte" Nullable="false" />
     <NavigationProperty Name="Reservations" Relationship="Self.FK_Reservation_Rooms" FromRole="Rooms" ToRole="Reservation" />
   </EntityType>
-  <EntityType Name="sysdiagram">
-    <Key>
-      <PropertyRef Name="diagram_id" />
-    </Key>
-    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-    <Property Name="principal_id" Type="Int32" Nullable="false" />
-    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="version" Type="Int32" />
-    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
-  </EntityType>
-  <EntityType Name="Task">
+  <EntityType Name="TaskClient">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="Task1" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="TaskName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="Task_Date" Type="DateTime" Nullable="false" Precision="3" />
     <Property Name="Deadline" Type="DateTime" Nullable="false" Precision="3" />
     <Property Name="Client_Id" Type="Int32" Nullable="false" />
     <Property Name="Status" Type="Byte" Nullable="false" />
     <Property Name="Description" Type="String" MaxLength="300" FixedLength="false" Unicode="true" Nullable="false" />
-    <NavigationProperty Name="Client" Relationship="Self.FK_Task_Clients" FromRole="Task" ToRole="Clients" />
-    <NavigationProperty Name="Comment_Report" Relationship="Self.FK_Comment_Report_Task" FromRole="Task" ToRole="Comment_Report" />
+    <NavigationProperty Name="Client" Relationship="Self.FK_Task_Clients" FromRole="TaskClient" ToRole="Clients" />
+    <NavigationProperty Name="Comment_Report" Relationship="Self.FK_Comment_Report_Task" FromRole="TaskClient" ToRole="Comment_Report" />
   </EntityType>
   <Association Name="FK_Comments_Clients">
     <End Role="Clients" Type="Self.Client" Multiplicity="1" />
@@ -128,12 +118,12 @@
   </Association>
   <Association Name="FK_Task_Clients">
     <End Role="Clients" Type="Self.Client" Multiplicity="1" />
-    <End Role="Task" Type="Self.Task" Multiplicity="*" />
+    <End Role="TaskClient" Type="Self.TaskClient" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Clients">
         <PropertyRef Name="Id" />
       </Principal>
-      <Dependent Role="Task">
+      <Dependent Role="TaskClient">
         <PropertyRef Name="Client_Id" />
       </Dependent>
     </ReferentialConstraint>
@@ -151,10 +141,10 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_Comment_Report_Task">
-    <End Role="Task" Type="Self.Task" Multiplicity="1" />
+    <End Role="TaskClient" Type="Self.TaskClient" Multiplicity="1" />
     <End Role="Comment_Report" Type="Self.Comment_Report" Multiplicity="*" />
     <ReferentialConstraint>
-      <Principal Role="Task">
+      <Principal Role="TaskClient">
         <PropertyRef Name="Id" />
       </Principal>
       <Dependent Role="Comment_Report">
@@ -194,8 +184,7 @@
     <EntitySet Name="Pitches" EntityType="Self.Pitch" />
     <EntitySet Name="Reservations" EntityType="Self.Reservation" />
     <EntitySet Name="Rooms" EntityType="Self.Room" />
-    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
-    <EntitySet Name="Tasks" EntityType="Self.Task" />
+    <EntitySet Name="TaskClients" EntityType="Self.TaskClient" />
     <AssociationSet Name="FK_Comments_Clients" Association="Self.FK_Comments_Clients">
       <End Role="Clients" EntitySet="Clients" />
       <End Role="Comments" EntitySet="Comments" />
@@ -206,14 +195,14 @@
     </AssociationSet>
     <AssociationSet Name="FK_Task_Clients" Association="Self.FK_Task_Clients">
       <End Role="Clients" EntitySet="Clients" />
-      <End Role="Task" EntitySet="Tasks" />
+      <End Role="TaskClient" EntitySet="TaskClients" />
     </AssociationSet>
     <AssociationSet Name="FK_Comment_Report_Comments" Association="Self.FK_Comment_Report_Comments">
       <End Role="Comments" EntitySet="Comments" />
       <End Role="Comment_Report" EntitySet="Comment_Report" />
     </AssociationSet>
     <AssociationSet Name="FK_Comment_Report_Task" Association="Self.FK_Comment_Report_Task">
-      <End Role="Task" EntitySet="Tasks" />
+      <End Role="TaskClient" EntitySet="TaskClients" />
       <End Role="Comment_Report" EntitySet="Comment_Report" />
     </AssociationSet>
     <AssociationSet Name="FK_Reservation_Pitch" Association="Self.FK_Reservation_Pitch">

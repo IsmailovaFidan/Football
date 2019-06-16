@@ -32,7 +32,6 @@ namespace FootballApp.Model
         public virtual DbSet<Pitch> Pitches { get; set; }
         public virtual DbSet<Reservation> Reservations { get; set; }
         public virtual DbSet<Room> Rooms { get; set; }
-        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
-        public virtual DbSet<Task> Tasks { get; set; }
+        public virtual DbSet<TaskClient> TaskClients { get; set; }
     }
 }

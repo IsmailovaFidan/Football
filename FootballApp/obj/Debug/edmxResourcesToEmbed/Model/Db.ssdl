@@ -66,22 +66,12 @@
     <Property Name="Rooms_Price" Type="decimal" Precision="18" Scale="0" Nullable="false" />
     <Property Name="Status" Type="tinyint" Nullable="false" />
   </EntityType>
-  <EntityType Name="sysdiagrams">
-    <Key>
-      <PropertyRef Name="diagram_id" />
-    </Key>
-    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
-    <Property Name="principal_id" Type="int" Nullable="false" />
-    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="version" Type="int" />
-    <Property Name="definition" Type="varbinary(max)" />
-  </EntityType>
-  <EntityType Name="Task">
+  <EntityType Name="TaskClient">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="Task" Type="nvarchar" MaxLength="200" Nullable="false" />
+    <Property Name="TaskName" Type="nvarchar" MaxLength="200" Nullable="false" />
     <Property Name="Task_Date" Type="datetime" Nullable="false" />
     <Property Name="Deadline" Type="datetime" Nullable="false" />
     <Property Name="Client_Id" Type="int" Nullable="false" />
@@ -101,10 +91,10 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_Comment_Report_Task">
-    <End Role="Task" Type="Self.Task" Multiplicity="1" />
+    <End Role="TaskClient" Type="Self.TaskClient" Multiplicity="1" />
     <End Role="Comment_Report" Type="Self.Comment_Report" Multiplicity="*" />
     <ReferentialConstraint>
-      <Principal Role="Task">
+      <Principal Role="TaskClient">
         <PropertyRef Name="Id" />
       </Principal>
       <Dependent Role="Comment_Report">
@@ -162,12 +152,12 @@
   </Association>
   <Association Name="FK_Task_Clients">
     <End Role="Clients" Type="Self.Clients" Multiplicity="1" />
-    <End Role="Task" Type="Self.Task" Multiplicity="*" />
+    <End Role="TaskClient" Type="Self.TaskClient" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Clients">
         <PropertyRef Name="Id" />
       </Principal>
-      <Dependent Role="Task">
+      <Dependent Role="TaskClient">
         <PropertyRef Name="Client_Id" />
       </Dependent>
     </ReferentialConstraint>
@@ -180,14 +170,13 @@
     <EntitySet Name="Pitch" EntityType="Self.Pitch" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Reservation" EntityType="Self.Reservation" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Rooms" EntityType="Self.Rooms" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="Task" EntityType="Self.Task" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TaskClient" EntityType="Self.TaskClient" Schema="dbo" store:Type="Tables" />
     <AssociationSet Name="FK_Comment_Report_Comments" Association="Self.FK_Comment_Report_Comments">
       <End Role="Comments" EntitySet="Comments" />
       <End Role="Comment_Report" EntitySet="Comment_Report" />
     </AssociationSet>
     <AssociationSet Name="FK_Comment_Report_Task" Association="Self.FK_Comment_Report_Task">
-      <End Role="Task" EntitySet="Task" />
+      <End Role="TaskClient" EntitySet="TaskClient" />
       <End Role="Comment_Report" EntitySet="Comment_Report" />
     </AssociationSet>
     <AssociationSet Name="FK_Comments_Clients" Association="Self.FK_Comments_Clients">
@@ -208,7 +197,7 @@
     </AssociationSet>
     <AssociationSet Name="FK_Task_Clients" Association="Self.FK_Task_Clients">
       <End Role="Clients" EntitySet="Clients" />
-      <End Role="Task" EntitySet="Task" />
+      <End Role="TaskClient" EntitySet="TaskClient" />
     </AssociationSet>
   </EntityContainer>
 </Schema>

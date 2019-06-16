@@ -19,6 +19,6 @@ namespace FootballApp.Model
         public int Comment_id { get; set; }
     
         public virtual Comment Comment { get; set; }
-        public virtual Task Task { get; set; }
+        public virtual TaskClient TaskClient { get; set; }
     }
 }

@@ -14,6 +14,7 @@ namespace FootballApp
     public partial class Reservation_Demo : Form
     {
         FootballEntities db = new FootballEntities();
+        decimal total;
         public Reservation_Demo()
         {
             InitializeComponent();
@@ -31,7 +32,7 @@ namespace FootballApp
             string RoomNumber = cmbRoomNumber.Text;
             DateTime DateFrom = dateFrom.Value;
             DateTime DateTo = dateTo.Value;
-            decimal total;
+           
         
             int PhoneNumber;
 
@@ -46,19 +47,37 @@ namespace FootballApp
                         Room selectedRoom =db.Rooms.First(a => a.Rooms_Number == RoomNumber);
                         Pitch selectedPitch = db.Pitches.First(b => b.Pitch_Name == PitchName);
                         total = selectedRoom.Rooms_Price + selectedPitch.Price;
-                        Client cl = db.Clients.Add(new Client
-                        {
-                            First_Name = FirstName,
-                            Last_Name = LastName,
-                            Phone = PhoneNumber,
-                        });
-                        db.SaveChanges();
+                      
+                        Client selectClient = null;
+                        int clientId = 0;
 
+                        Task ClientTask = Task.Factory.StartNew(() =>  
+                        {
+
+                            selectClient = db.Clients.Add(new Client
+                            {
+                                First_Name = FirstName,
+                                Last_Name = LastName,
+                                Phone = PhoneNumber
+                            });
+                            db.SaveChanges();
+
+                        });
+
+
+                        ClientTask.Wait();
+                        if (ClientTask.IsCompleted){
+                            clientId = selectClient.Id;
+                        }
+                       
                         Reservation rv = db.Reservations.Add(new Reservation
                         {
                             Reservation_Date = DateFrom,
                             Reservation_Deadline = DateTo,
-                            Price =(int)total
+                            Clients_Id =clientId,
+                            Pitch_Id=selectedPitch.Id,
+                            Rooms_Id=selectedRoom.Id,
+                            Price=(int)total
 
                         });
                         db.SaveChanges();
@@ -126,6 +145,9 @@ namespace FootballApp
             this.Close();
         }
 
-        
+        private void CmbRoomNumber_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            lblPrice.Text = total.ToString();
+        }
     }
 }

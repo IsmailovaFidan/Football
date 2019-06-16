@@ -12,16 +12,16 @@ namespace FootballApp.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class Task
+    public partial class TaskClient
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Task()
+        public TaskClient()
         {
             this.Comment_Report = new HashSet<Comment_Report>();
         }
     
         public int Id { get; set; }
-        public string Task1 { get; set; }
+        public string TaskName { get; set; }
         public System.DateTime Task_Date { get; set; }
         public System.DateTime Deadline { get; set; }
         public int Client_Id { get; set; }
